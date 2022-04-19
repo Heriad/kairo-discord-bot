@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { Client, Intents, Collection } = require('discord.js');
-const { kairo_token, welcome_channel } = require('./config.json');
+// const { kairo_token, welcome_channel } = require('./config.json');
 
 const client = new Client({
   intents: [
@@ -22,7 +22,7 @@ for (const file of commandFiles) {
 
 client.once('ready', async () => {
   console.log('Kairo started')
-  const channel = await client.channels.fetch(welcome_channel);
+  const channel = await client.channels.fetch(process.env.welcome_channel);
   channel.send('I am ready, what are we going to do?');
   client.user.setActivity('Learning new commands');
 });
@@ -44,4 +44,4 @@ client.on('interactionCreate', async interaction => {
   }
 })
 
-client.login(kairo_token)
+client.login(process.env.kairo_token)

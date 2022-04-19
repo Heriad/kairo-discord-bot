@@ -1,6 +1,6 @@
 const axios = require('axios')
 const { MessageEmbed } = require('discord.js');
-const { weather_api_key } = require('../config.json');
+// const { weather_api_key } = require('../config.json');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
     .addStringOption(option => option.setName('location').setDescription('Location to check the weather').setRequired(true)),
   async execute(interaction) {
     const location = interaction.options.getString('location');
-    const { data: currentWeather } = await axios.get('http://api.weatherstack.com/current?access_key=' + weather_api_key + '&query=' + location);
+    const { data: currentWeather } = await axios.get('http://api.weatherstack.com/current?access_key=' + process.env.weather_api_key + '&query=' + location);
     const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     const date = new Date();
     const day = weekday[date.getDay()];
@@ -24,8 +24,8 @@ module.exports = {
         { name: 'Location', value: currentWeather.request.query, inline: true },
         { name: 'Date', value: day + ' ' + currentWeather.location.localtime, inline: true },
         { name: 'Wind speed', value: currentWeather.current.wind_speed.toString() + ' km/h', inline: true },
-        { name: 'Precipitation', value: currentWeather.current.precip.toString(), inline: true },
-        { name: 'Humidity', value: currentWeather.current.humidity.toString(), inline: true }
+        { name: 'Precipitation', value: currentWeather.current.precip.toString() + '%', inline: true },
+        { name: 'Humidity', value: currentWeather.current.humidity.toString() + '%', inline: true }
       )
     await interaction.reply(
       { embeds: [weatherEmbed] }
