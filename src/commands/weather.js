@@ -1,7 +1,6 @@
-const axios = require('axios')
-const { MessageEmbed } = require('discord.js');
-// const { weather_api_key } = require('../config.json');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const axios = require('axios');
+const { weather_api_key } = require('../config.json');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -10,12 +9,12 @@ module.exports = {
     .addStringOption(option => option.setName('location').setDescription('Location to check the weather').setRequired(true)),
   async execute(interaction) {
     const location = interaction.options.getString('location');
-    const { data: currentWeather } = await axios.get('http://api.weatherstack.com/current?access_key=' + process.env.weather_api_key + '&query=' + location);
+    const { data: currentWeather } = await axios.get('http://api.weatherstack.com/current?access_key=' + weather_api_key + '&query=' + location);
     const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     const date = new Date();
     const day = weekday[date.getDay()];
-    const weatherEmbed = new MessageEmbed()
-      .setColor('#333')
+    const weatherEmbed = new EmbedBuilder()
+      .setColor('#333333')
       .setTitle('Weather')
       .setDescription(currentWeather.current.weather_descriptions[0])
       .setThumbnail(currentWeather.current.weather_icons[0])
@@ -26,9 +25,9 @@ module.exports = {
         { name: 'Wind speed', value: currentWeather.current.wind_speed.toString() + ' km/h', inline: true },
         { name: 'Precipitation', value: currentWeather.current.precip.toString() + '%', inline: true },
         { name: 'Humidity', value: currentWeather.current.humidity.toString() + '%', inline: true }
-      )
+      );
     await interaction.reply(
       { embeds: [weatherEmbed] }
     );
   }
-}
+};

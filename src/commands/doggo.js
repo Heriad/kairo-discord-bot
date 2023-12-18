@@ -1,6 +1,5 @@
 const axios = require('axios');
-const responseStatus = require('../models/status');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,18 +7,13 @@ module.exports = {
     .setDescription('Displays random a dog photo')
     .addStringOption(option => option.setName('breed').setDescription('Dog breed').setRequired(false)),
   async execute(interaction) {
-    const breed = interaction.options.getString('breed')?.toLowerCase();
-    let response;
-    if (breed) {
-      response = await axios.get('https://dog.ceo/api/breed/' + breed + '/images/random');
-    } else {
-      response = await axios.get('https://dog.ceo/api/breeds/image/random');
-    }
-    const doggo = response.data.message;
-    if (response.data.status === responseStatus.SUCCESS) {
-      await interaction.reply(doggo)
-    } else {
-      await interaction.reply('Doggo unavailable');
+    try {
+      const breed = interaction.options.getString('breed')?.toLowerCase();
+      const response = await axios.get(breed ? `https://dog.ceo/api/breed/${breed}/images/random` : 'https://dog.ceo/api/breeds/image/random');
+      const doggo = response.data.message;
+      await interaction.reply(doggo);
+    } catch (_) {
+      await interaction.reply('Something went wrong while fetching a doggo 🐶');
     }
   }
-}
+};
