@@ -26,8 +26,6 @@ module.exports = {
         { name: 'Precipitation', value: currentWeather.current.precip.toString() + '%', inline: true },
         { name: 'Humidity', value: currentWeather.current.humidity.toString() + '%', inline: true }
       );
-    await interaction.reply(
-      { embeds: [weatherEmbed] }
-    );
+    await interaction.reply({ embeds: [weatherEmbed] });
   }
 };
