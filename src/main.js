@@ -42,6 +42,6 @@ client.on('interactionCreate', async interaction => {
       ephemeral: true
     });
   }
-})
+});
 
 client.login(kairo_token);
