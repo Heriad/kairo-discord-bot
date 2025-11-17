@@ -19,10 +19,12 @@
   },
   "homepage": "https://github.com/Heriad/kairo-discord-bot#readme",
   "dependencies": {
+    "@discordjs/voice": "^0.19.0",
     "axios": "^1.6.2",
-    "discord.js": "^14.14.1"
+    "discord.js": "^14.14.1",
+    "play-dl": "^1.9.7"
   },
   "devDependencies": {
-    "eslint": "^8.56.0"
+    "eslint": "^9.39.1"
   }
 }

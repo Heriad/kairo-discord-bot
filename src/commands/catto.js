@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -11,7 +11,10 @@ module.exports = {
       const catImageUrl = response[0].url;
       await interaction.reply(catImageUrl);
     } catch (_) {
-      await interaction.reply('Something went wrong while fetching a catto 😿');
+      await interaction.reply({
+        content: 'Something went wrong while fetching a catto 😿',
+        flags: MessageFlags.Ephemeral
+      });
     }
   }
 };

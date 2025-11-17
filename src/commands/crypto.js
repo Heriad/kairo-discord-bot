@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -22,7 +22,10 @@ module.exports = {
         );
       await interaction.reply({ embeds: [cryptoPriceEmbed] });
     } catch (_) {
-      await interaction.reply('Something went wrong while fetching a cryptocurrencies data 🤑');
+      await interaction.reply({
+        content: 'Something went wrong while fetching a cryptocurrencies data 🤑',
+        flags: MessageFlags.Ephemeral
+      });
     }
   }
 };

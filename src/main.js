@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { Events } = require('discord.js');
 const { kairo_token, welcome_channel } = require('./config.json');
+const { Client, GatewayIntentBits, Collection, MessageFlags } = require('discord.js');
 
 const client = new Client({
   intents: [
@@ -20,26 +21,26 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
-client.once('ready', async () => {
-  console.log('Kairo started');
-  const channel = await client.channels.fetch(welcome_channel);
-  channel.send('I am ready, what are we going to do?');
-  client.user.setActivity('Evolving');
+client.once(Events.ClientReady, async () => {
+  try {
+    const channel = await client.channels.fetch(welcome_channel);
+    channel.send('I am ready, what are we going to do?');
+  } catch (err) {
+    console.error('Failed to reach welcome channel', err);
+  }
 });
 
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isCommand()) {
-    return;
-  }
+client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isChatInputCommand()) return;
+
   const command = client.commands.get(interaction.commandName);
   if (!command) return;
   try {
     await command.execute(interaction);
-  } catch (err) {
-    console.error(err);
+  } catch (_) {
     await interaction.reply({
       content: 'There was an error while executing this command',
-      ephemeral: true
+      flags: MessageFlags.Ephemeral
     });
   }
 });
