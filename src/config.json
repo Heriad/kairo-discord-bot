@@ -1,0 +1,7 @@
+{
+  "kairo_token": "BOT_TOKEN",
+  "welcome_channel": "TEXT_CHANNEL_ID",
+  "clientId": "APPLICATION_ID",
+  "guildId": "GUILD_ID_FOR_COMMANDS",
+  "weather_api_key": "WEATHERSTACK_KEY"
+}
